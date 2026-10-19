@@ -26,7 +26,7 @@ Page de départ pour tout l'Occitanie : https://transport.data.gouv.fr/datasets/
 ## <u>Base de calcul</u>
 
 - **OSM Midi-Pyrénées** : réseau piéton pour les isochrones. https://download.geofabrik.de/europe/france.html
-- **ADMIN EXPRESS** : limites communales. https://geoservices.ign.fr/adminexpress
+- **Geo service** : limites communales. [https://geoservices.ign.fr/adminexpress](https://geo.api.gouv.fr/communes?codeDepartement=31&format=geojson&geometry=contour)
 
 ## <u>Formats</u>
 
