@@ -27,11 +27,10 @@ Explications détaillées des fichiers : voir [`AFFLUENCE.md`](AFFLUENCE.md).
 | Vélos Vélo d'Aqui Argelès-sur-Mer | `https://api.gbfs.ecovelo.mobi/velodaqui/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/velos-a-assistance-electrique-en-libre-service-argeles-sur-mer-velo-daqui-1) | _à vérifier sur la page_ |
 | Vélos VélopartaG Gévaudan | `https://www.mobility-parc.net/gbfs/v3/GEVAUDAN/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/gevaudan-velo-en-libre-service) | _à vérifier sur la page_ |
 | Vélos et trottinettes Dott (national, filtré Occitanie) | `https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/tier-dott-gbfs-france) | _à vérifier sur la page_ |
-| Autopartage Getaround (national, filtré Occitanie) | `https://fr.getaround.com/gbfs/manifest?country_code=FR` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/flotte-getaround-en-libre-service-france) | Non spécifiée |
 | Autopartage Clem (national, filtré Occitanie) | `https://gbfs.clem.mobi/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/gbfs-autopartage-publique-clem) | Non spécifiée |
 | Autopartage Citiz Développement (national, filtré Occitanie) | `https://backend.citiz.fr/public/provider/12/gbfs/3.0/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/citiz-autopartage-developpement) | Licence Ouverte 2.0 |
 
-Période d'enregistrement : du **20/10/2026 à 9h56** au _à compléter_, pour les 15 services.
+Période d'enregistrement : du **20/10/2026 à 9h56** au _à compléter_, pour les 14 services.
 (Une collecte de test sur 4 services, le 19/10 à partir de 17h04, n'est pas utilisée.)
 
 ### Fichiers
