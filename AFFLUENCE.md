@@ -12,18 +12,39 @@ Le réseau Citiz Occitanie couvre Toulouse et sa périphérie mais aussi des vil
 
 ## Fichiers
 
-| Fichier | Contenu | Niveau géographique | État |
-|---|---|---|---|
-| `occitanie/sirene_occitanie.csv` | Établissements d'entreprises géolocalisés | Point (adresse) | Filtré Occitanie |
-| `occitanie/bpe_occitanie.csv` | Équipements et services géolocalisés | Point (adresse) | Filtré Occitanie |
-| `frequentation-gares.csv` | Voyageurs par gare et par année, 2015-2024 | Gare | France entière |
-| `gares-de-voyageurs.geojson` | Position des gares voyageurs | Gare | France entière |
-| `base-flux-mobilite-domicile-lieu-travail-….csv` | Trajets domicile-travail entre communes | Commune → commune | France entière |
-| `TYPEQU_2025.csv` | Dictionnaire des types d'équipements BPE | — | Tel quel |
-| `gbfs_brut/<service>/` | Relevés toutes les 5 min des 15 services en libre-service | Station / véhicule | Collecte en cours |
-| `analyses/` | Usage calculé de chaque station | Station | À générer en fin de collecte |
+### Fichiers prêts à l'emploi (dossier `occitanie/`)
 
-Les fichiers d'origine SIRENE (`geoloc-geolocalisationetablissement-sirene-….parquet`, 792 Mo) et BPE (`BPE25.parquet`), France entière, sont conservés localement mais ne sont pas utilisés directement : on travaille sur les versions filtrées.
+Ce sont les fichiers à utiliser pour l'analyse et le modèle : tous filtrés sur l'Occitanie, avec des coordonnées en latitude / longitude.
+
+| Fichier | Contenu | Niveau géographique |
+|---|---|---|
+| `sirene_occitanie.csv` | Établissements d'entreprises géolocalisés | Point (adresse) |
+| `bpe_occitanie.csv` | Équipements et services géolocalisés (colonnes INSEE complètes) | Point (adresse) |
+| `bpe_occitanie_categories.csv` | Équipements avec leur nom en clair et leur domaine | Point (adresse) |
+| `bpe_communes_occitanie.csv` | Nombre d'équipements par commune et par domaine | Commune |
+| `gares_occitanie.csv` | Gares avec position et voyageurs par année, 2015-2024 | Gare |
+| `mobpro_flux_occitanie.csv` | Trajets domicile-travail partant d'Occitanie ou y arrivant | Commune → commune |
+| `mobpro_communes_occitanie.csv` | Actifs résidents, sortants, entrants et attractivité par commune | Commune |
+
+### Relevés temps réel
+
+| Fichier | Contenu | État |
+|---|---|---|
+| `gbfs_brut/<service>/` | Relevés toutes les 5 min des 15 services en libre-service | Collecte en cours |
+| `analyses/` | Usage calculé de chaque station | À générer en fin de collecte |
+
+### Fichiers sources (France entière, conservés tels quels)
+
+| Fichier | Contenu |
+|---|---|
+| `geoloc-geolocalisationetablissement-sirene-….parquet` | SIRENE géolocalisé, 792 Mo |
+| `BPE25.parquet` | BPE 2025, équipements géolocalisés |
+| `TYPEQU_2025.csv` | Dictionnaire des types d'équipements BPE |
+| `frequentation-gares.csv` | Voyageurs par gare et par année |
+| `gares-de-voyageurs.geojson` | Position des gares voyageurs |
+| `base-flux-mobilite-domicile-lieu-travail-….csv` | Trajets domicile-travail entre communes |
+
+Les fichiers sources ne sont pas utilisés directement : ils servent à reconstruire les fichiers du dossier `occitanie/` avec les scripts.
 
 ## Détail des fichiers
 
@@ -51,8 +72,9 @@ Position de chaque équipement et service en Occitanie : commerces, écoles, san
   - code commune et coordonnées, telles que fournies par l'INSEE
   - colonnes ajoutées par le script : `code_commune_5`, `departement`, `longitude_gps`, `latitude_gps`
 - **Traitement** : filtre sur les 13 départements d'Occitanie et ajout de la latitude / longitude (script `filtrer_occitanie.py`)
-- **Contrôle** : _à compléter (nombre d'équipements, % dans le cadre de l'Occitanie, lignes sans coordonnées)_
+- **Contrôle** : 306 547 équipements
 - **Clé de croisement** : `TYPEQU` avec `TYPEQU_2025.csv`
+- **Version simplifiée** : `bpe_occitanie_categories.csv` (voir plus bas)
 
 ### 3. `frequentation-gares.csv`
 
@@ -60,7 +82,7 @@ Nombre de voyageurs de chaque gare, chaque année de 2015 à 2024. Une gare trè
 
 - **Source** : SNCF Gares & Connexions, Fréquentation en gares
 - **Contenu** : nom de la gare, code UIC, code postal, segment de la gare, nombre de voyageurs par année
-- **Traitement** : aucun pour l'instant (France entière, environ 3 000 gares)
+- **Traitement** : relié à la position des gares et filtré sur l'Occitanie dans `occitanie/gares_occitanie.csv` (script `nettoyer_affluence.py`)
 - **Clé de croisement** : code UIC avec `gares-de-voyageurs.geojson`, pour obtenir la position de la gare
 
 ### 4. `gares-de-voyageurs.geojson`
@@ -70,7 +92,7 @@ Position géographique de chaque gare voyageurs. Complète le fichier précéden
 - **Source** : SNCF, Gares de voyageurs du réseau ferré national
 - **Contenu** : identifiant et nom de la gare, trigramme, segment, position géographique, code commune, code(s) UIC
 - **Format** : GeoJSON, coordonnées en longitude / latitude
-- **Traitement** : aucun pour l'instant (France entière)
+- **Traitement** : relié à la fréquentation dans `occitanie/gares_occitanie.csv`
 - **Clé de croisement** : code UIC avec `frequentation-gares.csv` ; code commune pour filtrer sur l'Occitanie
 
 ### 5. `base-flux-mobilite-domicile-lieu-travail-….csv`
@@ -82,7 +104,7 @@ Pour chaque commune de résidence, le nombre d'actifs qui vont travailler dans c
   - `CODGEO` : code de la commune de résidence
   - `DCLT`, `L_DCLT` : code et nom de la commune de travail
   - `NBFLUX_C22_ACTOCC15P` : nombre d'actifs de 15 ans ou plus faisant ce trajet
-- **Traitement** : aucun pour l'instant (France entière). À filtrer sur les communes d'Occitanie, en résidence et / ou en lieu de travail.
+- **Traitement** : filtré sur l'Occitanie et résumé par commune dans `occitanie/mobpro_flux_occitanie.csv` et `occitanie/mobpro_communes_occitanie.csv`
 - **Attention** : l'INSEE indique que les flux de moins de 200 personnes sont à considérer comme des ordres de grandeur.
 
 ### 6. `TYPEQU_2025.csv`
@@ -92,9 +114,60 @@ Dictionnaire des types d'équipements de la BPE : permet de savoir qu'un code co
 - **Source** : INSEE, BPE 2025, liste hiérarchisée des types d'équipements
 - **Colonnes** : `TYPEQU` (code), `LIB` (libellé), `DESCRIPTION`, `SDOM` (sous-domaine), `ANNEE`
 - **Traitement** : aucun, fichier gardé tel quel
-- **Clé de croisement** : `TYPEQU` avec `bpe_occitanie.csv`
+- **Clé de croisement** : `TYPEQU` avec `bpe_occitanie.csv` ; utilisé pour produire `bpe_occitanie_categories.csv`
 
-### 7. Flux temps réel : `gbfs_brut/<service>/`
+### 7. `occitanie/gares_occitanie.csv`
+
+Une ligne par gare d'Occitanie, avec sa position et sa fréquentation. C'est la version prête à l'emploi des fichiers 3 et 4.
+
+- **Colonnes** :
+  - `code_uic`, `nom_gare`, `code_postal`, `segment` (catégorie SNCF : a = nationale, b = régionale, c = locale)
+  - `voyageurs_2015` à `voyageurs_2024` : voyageurs par année
+  - `voyageurs_dernier` : voyageurs de la dernière année (2024)
+  - `evolution_2019_2024_pct` : évolution de la fréquentation depuis 2019, en %
+  - `code_commune`, `departement`, `longitude`, `latitude`
+- **Traitement** : codes UIC ramenés à 8 chiffres pour relier les deux fichiers SNCF (une gare peut avoir plusieurs codes UIC), filtre sur l'Occitanie par le code commune ou, à défaut, le code postal
+- **Contrôle** : 279 gares en Occitanie, dont 34 sans position. En tête : Toulouse Matabiau (14,5 millions de voyageurs en 2024), Montpellier Saint-Roch (7,5 M), Nîmes (4,4 M), Montpellier Sud de France (2,5 M), Narbonne (2,4 M)
+
+### 8. `occitanie/mobpro_flux_occitanie.csv`
+
+Les trajets domicile-travail dont la commune de résidence **ou** la commune de travail est en Occitanie (y compris les trajets avec les régions voisines).
+
+- **Colonnes** : `commune_residence`, `nom_residence`, `commune_travail`, `nom_travail`, `actifs`, `dep_residence`, `dep_travail`
+- **Contrôle** : 87 087 trajets (sur 986 967 en France)
+
+### 9. `occitanie/mobpro_communes_occitanie.csv`
+
+Indicateurs d'emploi et de déplacements pour chaque commune d'Occitanie.
+
+- **Colonnes** :
+  - `code_commune`, `nom`, `departement`
+  - `actifs_residents` : actifs ayant un emploi qui habitent la commune
+  - `actifs_travaillant_sur_place` : ceux qui travaillent dans leur propre commune
+  - `actifs_sortants` : ceux qui partent travailler dans une autre commune
+  - `actifs_entrants` : actifs venant d'autres communes pour y travailler
+  - `emplois_occupes` : emplois de la commune (sur place + entrants)
+  - `part_sortants_pct` : part des résidents qui travaillent ailleurs
+  - `indice_attractivite` : emplois / actifs résidents. Au-dessus de 1, la commune attire plus de travailleurs qu'elle n'en loge : c'est un **pôle d'emploi**. En dessous, c'est une commune plutôt **résidentielle**, d'où partent des navetteurs.
+- **Contrôle** : 4 421 communes. Plus gros pôles d'emploi : Toulouse (352 900 emplois, indice 1,5), Montpellier (177 000, 1,5), Nîmes (82 800, 1,6), Perpignan (71 200, 1,9), Béziers (41 100, 1,7)
+- **Pourquoi cette donnée** : une commune résidentielle avec beaucoup de navetteurs est une cible pour réduire l'usage de la voiture ; un pôle d'emploi attire des déplacements en journée.
+
+### 10. `occitanie/bpe_occitanie_categories.csv`
+
+Version simplifiée de la BPE : chaque équipement avec son nom en clair et son domaine.
+
+- **Colonnes** : `TYPEQU`, `libelle` (ex. « Hypermarché », « École maternelle »), `domaine`, `sous_domaine`, `code_commune`, `iris`, `departement`, `longitude_gps`, `latitude_gps`
+- **Domaines** (première lettre du code `TYPEQU`) : `services_particuliers` (A), `commerces` (B), `enseignement` (C), `sante_action_sociale` (D), `transports_deplacements` (E), `sports_loisirs_culture` (F), `tourisme` (G)
+- **Contrôle** : 306 547 équipements : services aux particuliers 144 474, santé et action sociale 76 811, commerces 39 568, sports-loisirs-culture 28 221, enseignement 7 461, tourisme 5 134, transports 4 878
+
+### 11. `occitanie/bpe_communes_occitanie.csv`
+
+Nombre d'équipements par commune, pour chaque domaine.
+
+- **Colonnes** : `code_commune`, `nb_<domaine>` pour chacun des 7 domaines, `nb_equipements_total`
+- **Contrôle** : 4 446 communes
+
+### 12. Flux temps réel : `gbfs_brut/<service>/`
 
 État des stations et véhicules en libre-service enregistré **toutes les 5 minutes** pendant le hackathon (script `collecte_gbfs.py`). Aucune donnée d'usage n'étant publiée directement, c'est ce relevé régulier qui permet de la reconstituer : quand le nombre de véhicules d'une station baisse entre deux relevés, des véhicules sont partis.
 
@@ -135,7 +208,7 @@ Les services sans stations (YEGO, Dott, Getaround…) n'ont que le fichier `vehi
 - **Période** : du **20/10/2026 à 9h56** au _à compléter_, pour les 15 services
 - **Test préalable** : une première collecte sur 4 services (Citiz, VélôToulouse, YEGO, Vélomagg) a été faite le 19/10 à partir de 17h04, puis arrêtée. Elle n'est pas utilisée dans l'analyse (fichiers rangés à part dans `gbfs_test_19oct/`).
 
-### 8. Usage calculé : `analyses/`
+### 13. Usage calculé : `analyses/`
 
 Résultat du script `analyse_usage.py`, à lancer à partir des relevés. _Fichiers à générer en fin de collecte._
 
@@ -158,6 +231,7 @@ Résultat du script `analyse_usage.py`, à lancer à partir des relevés. _Fichi
 | `filtrer_occitanie.py` | Filtre SIRENE et la BPE sur l'Occitanie et ajoute latitude / longitude |
 | `telecharger.py` | Télécharge un gros fichier en reprenant automatiquement après une coupure |
 | `collecte_gbfs.py` | Enregistre toutes les 5 minutes l'état des 15 services en libre-service (11 d'Occitanie, 4 nationaux filtrés sur l'Occitanie) |
+| `nettoyer_affluence.py` | Relie et filtre les gares, résume le domicile-travail par commune, ajoute les catégories de la BPE |
 | `analyse_usage.py` | Calcule l'usage de chaque station à partir des relevés |
 
 Dépendances : `pip install duckdb pyproj pandas pyarrow` (`collecte_gbfs.py` n'en a besoin d'aucune).
@@ -179,6 +253,8 @@ Dépendances : `pip install duckdb pyproj pandas pyarrow` (`collecte_gbfs.py` n'
 ## Limites
 
 - **SIRENE compte des établissements, pas des emplois** : le fichier ne donne pas le nombre de salariés. Une grande usine et un auto-entrepreneur comptent pareil. Le fichier contient probablement aussi des établissements fermés.
+- **Gares sans position** : 34 gares d'Occitanie de la fréquentation n'ont pas été retrouvées dans le fichier des positions (code UIC absent ou gare fermée). Elles sont gardées, sans coordonnées.
+- **Services aux particuliers** : ce domaine de la BPE regroupe aussi les artisans (plombiers, électriciens…), qui ne sont pas des destinations de déplacement. Pour le modèle, préférer les commerces, la santé, l'enseignement et les sports-loisirs, ou filtrer par sous-domaine.
 - **Usage déduit des relevés** : un départ et un retour dans la même fenêtre de 5 minutes ne sont pas vus, les chiffres sont donc des minimums. Pour les vélos, les camions de régulation qui déplacent des vélos comptent aussi comme des départs et retours.
 - **Courte période d'observation** : 2 à 3 jours de relevés, en semaine, qui ne reflètent ni les week-ends ni les variations saisonnières.
 - **Filtre géographique approximatif** : les flux nationaux sont filtrés sur un rectangle autour de l'Occitanie, qui déborde un peu sur les régions voisines. Un filtre exact par commune peut être appliqué à l'analyse.
