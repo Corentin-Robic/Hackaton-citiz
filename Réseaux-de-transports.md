@@ -29,6 +29,7 @@ Source	Contenu	Lien :
 Citiz Occitanie	Stations Citiz (Toulouse, Albi, Cahors, Tarbes, Millau, Castelnaudary…)	https://transport.data.gouv.fr/datasets?type=vehicles-sharing&q=citiz
 
 Getaround	Voitures de particuliers, sans stations fixes (GBFS v3)	https://transport.data.gouv.fr/datasets?type=vehicles-sharing&q=getaround
+
 Stations d'autopartage Toulouse Métropole	Places réservées à l'autopartage	https://www.data.gouv.fr/en/datasets/stations-d-auto-partage-tm/
 
 Source d'origine des stations TM : https://data.toulouse-metropole.fr/explore/dataset/stations-d-auto-partage/
@@ -72,11 +73,16 @@ ADMIN EXPRESS (IGN)	Limites officielles (prendre GeoPackage, Lambert 93)	https:/
 Source	Contenu	Lien :
 
 INSEE carreaux 200 m (Filosofi)	Population par carreau de 200 m	https://www.insee.fr/fr/statistiques/8735162
+
 INSEE projections Omphale	Population projetée 2018-2070	https://www.insee.fr/fr/statistiques/6652134
 
 ## <u>Formats</u>
 GTFS : garder le .zip
+
 GBFS : utiliser l'URL JSON (gbfs.json, puis station_information.json)
+
 Points et zones : GeoJSON
+
 OSM : .osm.pbf
+
 Projections : importer en EPSG:4326, reprojeter en EPSG:2154 pour les distances
