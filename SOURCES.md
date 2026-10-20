@@ -19,9 +19,20 @@ Explications détaillées des fichiers : voir [`AFFLUENCE.md`](AFFLUENCE.md).
 | Vélos VélôToulouse | `https://api.cyclocity.fr/contracts/toulouse/gbfs/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/velotoulouse-velo-en-libre-service-au-standard-gbfs) | ODbL |
 | Scooters YEGO Toulouse (GBFS 2.2) | `https://services.rideyego.com/gbfs/2-2/toulouse/fr/gbfs` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/yego-gbfs-toulouse) | Non spécifiée |
 | Vélos Vélomagg Montpellier | `https://gbfs.theta.fifteen.eu/gbfs/montpellier/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/disponibilite-en-temps-reel-des-velos-en-libre-service-velomagg-de-montpellier) | ODbL |
+| Vélos NemoVélo Nîmes Métropole | `https://api.gbfs.ecovelo.mobi/nemovelo/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/velos-a-assistance-electrique-en-libre-service-nimes-metropole-nemovelo) | _à vérifier sur la page_ |
+| Vélos TLP Mobilités Tarbes-Lourdes | `https://api.gbfs.ecovelo.mobi/tlpmobilites/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/vls-tlp-mobilites) | _à vérifier sur la page_ |
+| Vélos et trottinettes Pony Perpignan | `https://proxy.transport.data.gouv.fr/resource/pony-perpignan-gbfs/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/velos-et-trottinettes-pony-perpignan) | _à vérifier sur la page_ |
+| Vélos CYCLOlibre Carcassonne | `https://api.gbfs.ecovelo.mobi/cyclolibre/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/cyclolibre-les-velos-electriques-en-libre-service-par-carcassonne) | _à vérifier sur la page_ |
+| Vélos Vélo'c Grand Auch | `https://api.gbfs.ecovelo.mobi/auchveloc/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/vls-auch-veloc) | _à vérifier sur la page_ |
+| Vélos Vélo d'Aqui Argelès-sur-Mer | `https://api.gbfs.ecovelo.mobi/velodaqui/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/velos-a-assistance-electrique-en-libre-service-argeles-sur-mer-velo-daqui-1) | _à vérifier sur la page_ |
+| Vélos VélopartaG Gévaudan | `https://www.mobility-parc.net/gbfs/v3/GEVAUDAN/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/gevaudan-velo-en-libre-service) | _à vérifier sur la page_ |
+| Vélos et trottinettes Dott (national, filtré Occitanie) | `https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/tier-dott-gbfs-france) | _à vérifier sur la page_ |
+| Autopartage Getaround (national, filtré Occitanie) | `https://fr.getaround.com/gbfs/manifest?country_code=FR` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/flotte-getaround-en-libre-service-france) | Non spécifiée |
+| Autopartage Clem (national, filtré Occitanie) | `https://gbfs.clem.mobi/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/gbfs-autopartage-publique-clem) | Non spécifiée |
+| Autopartage Citiz Développement (national, filtré Occitanie) | `https://backend.citiz.fr/public/provider/12/gbfs/3.0/gbfs.json` | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/citiz-autopartage-developpement) | Licence Ouverte 2.0 |
 
-Période d'enregistrement : du **19/10/2026 à 17h04** au _à compléter_.
-Premier relevé : 142 stations et 255 véhicules Citiz, 466 stations VélôToulouse, 328 scooters YEGO, 52 stations Vélomagg.
+Période d'enregistrement : du **20/10/2026 à 9h56** au _à compléter_, pour les 15 services.
+(Une collecte de test sur 4 services, le 19/10 à partir de 17h04, n'est pas utilisée.)
 
 ### Fichiers
 
