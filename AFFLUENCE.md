@@ -30,7 +30,7 @@ Ce sont les fichiers à utiliser pour l'analyse et le modèle : tous filtrés su
 
 | Fichier | Contenu | État |
 |---|---|---|
-| `gbfs_brut/<service>/` | Relevés toutes les 5 min des 15 services en libre-service | Collecte en cours |
+| `gbfs_brut/<service>/` | Relevés toutes les 5 min des 14 services en libre-service | Collecte en cours |
 | `analyses/` | Usage calculé de chaque station | À générer en fin de collecte |
 
 ### Fichiers sources (France entière, conservés tels quels)
@@ -173,7 +173,7 @@ Nombre d'équipements par commune, pour chaque domaine.
 
 On ne collecte que les services **en libre-service** : les bus, trams, métros et trains ont des horaires fixes (GTFS), téléchargés une seule fois dans la partie réseaux.
 
-**Services enregistrés (15)** :
+**Services enregistrés (14)** :
 
 | Dossier | Service | Type | Zone |
 |---|---|---|---|
@@ -189,13 +189,12 @@ On ne collecte que les services **en libre-service** : les bus, trams, métros e
 | `velodaqui_argeles` | Vélo d'Aqui | Vélos électriques | Argelès-sur-Mer |
 | `velopartag_gevaudan` | VélopartaG | Vélos | CC du Gévaudan |
 | `dott_france` | Dott | Vélos et trottinettes, sans stations | National, filtré Occitanie |
-| `getaround_france` | Getaround | Autopartage entre particuliers, sans stations | National, filtré Occitanie |
 | `clem_france` | Clem | Autopartage | National, filtré Occitanie |
 | `citiz_developpement` | Citiz Développement | Autopartage | National, filtré Occitanie |
 
 Les flux nationaux sont filtrés sur un cadre géographique autour de l'Occitanie : seuls les stations et véhicules situés dans ce cadre sont enregistrés. Un service sans aucun véhicule en Occitanie ne produit pas de dossier.
 
-Getaround publie un flux par ville (une trentaine en Occitanie). Une même voiture apparaissant dans les flux de plusieurs villes voisines, le script regroupe toutes les villes dans un seul dossier et ne garde chaque voiture qu'une fois par relevé.
+**Getaround n'est pas collecté** : il publie un flux par commune de France (3 754), trop lourd à relever toutes les 5 minutes, pour un service de location entre particuliers peu comparable à Citiz (un propriétaire peut rendre sa voiture indisponible sans qu'elle soit louée).
 
 **Fichiers produits dans chaque dossier** :
 
@@ -203,9 +202,9 @@ Getaround publie un flux par ville (une trentaine en Occitanie). Une même voitu
 - **`station_status_<date>.csv`** (toutes les 5 min) : `collecte` (date et heure du relevé), `last_reported`, `station_id`, `vehicules_disponibles`, `places_libres`, `vehicules_hors_service`, `en_location`, `en_retour`
 - **`vehicle_status_<date>.csv`** (toutes les 5 min) : `collecte`, `vehicle_id`, `station_id`, `lat`, `lon`, `vehicle_type_id`, `reserve`, `hors_service`, `autonomie_m`
 
-Les services sans stations (YEGO, Dott, Getaround…) n'ont que le fichier `vehicle_status`.
+Les services sans stations (YEGO, Dott…) n'ont que le fichier `vehicle_status`.
 
-- **Période** : du **20/10/2026 à 9h56** au _à compléter_, pour les 15 services
+- **Période** : du **20/10/2026 à 9h56** au _à compléter_, pour les 14 services
 - **Test préalable** : une première collecte sur 4 services (Citiz, VélôToulouse, YEGO, Vélomagg) a été faite le 19/10 à partir de 17h04, puis arrêtée. Elle n'est pas utilisée dans l'analyse (fichiers rangés à part dans `gbfs_test_19oct/`).
 
 ### 13. Usage calculé : `analyses/`
@@ -230,7 +229,7 @@ Résultat du script `analyse_usage.py`, à lancer à partir des relevés. _Fichi
 |---|---|
 | `filtrer_occitanie.py` | Filtre SIRENE et la BPE sur l'Occitanie et ajoute latitude / longitude |
 | `telecharger.py` | Télécharge un gros fichier en reprenant automatiquement après une coupure |
-| `collecte_gbfs.py` | Enregistre toutes les 5 minutes l'état des 15 services en libre-service (11 d'Occitanie, 4 nationaux filtrés sur l'Occitanie) |
+| `collecte_gbfs.py` | Enregistre toutes les 5 minutes l'état des 14 services en libre-service (11 d'Occitanie, 3 nationaux filtrés sur l'Occitanie) |
 | `nettoyer_affluence.py` | Relie et filtre les gares, résume le domicile-travail par commune, ajoute les catégories de la BPE |
 | `analyse_usage.py` | Calcule l'usage de chaque station à partir des relevés |
 
