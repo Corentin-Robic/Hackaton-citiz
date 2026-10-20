@@ -116,11 +116,13 @@ On ne collecte que les services **en libre-service** : les bus, trams, métros e
 | `velodaqui_argeles` | Vélo d'Aqui | Vélos électriques | Argelès-sur-Mer |
 | `velopartag_gevaudan` | VélopartaG | Vélos | CC du Gévaudan |
 | `dott_france` | Dott | Vélos et trottinettes, sans stations | National, filtré Occitanie |
-| `getaround_france__<système>` | Getaround | Autopartage | National, filtré Occitanie |
+| `getaround_france` | Getaround | Autopartage entre particuliers, sans stations | National, filtré Occitanie |
 | `clem_france` | Clem | Autopartage | National, filtré Occitanie |
 | `citiz_developpement` | Citiz Développement | Autopartage | National, filtré Occitanie |
 
 Les flux nationaux sont filtrés sur un cadre géographique autour de l'Occitanie : seuls les stations et véhicules situés dans ce cadre sont enregistrés. Un service sans aucun véhicule en Occitanie ne produit pas de dossier.
+
+Getaround publie un flux par ville (une trentaine en Occitanie). Une même voiture apparaissant dans les flux de plusieurs villes voisines, le script regroupe toutes les villes dans un seul dossier et ne garde chaque voiture qu'une fois par relevé.
 
 **Fichiers produits dans chaque dossier** :
 
@@ -128,13 +130,10 @@ Les flux nationaux sont filtrés sur un cadre géographique autour de l'Occitani
 - **`station_status_<date>.csv`** (toutes les 5 min) : `collecte` (date et heure du relevé), `last_reported`, `station_id`, `vehicules_disponibles`, `places_libres`, `vehicules_hors_service`, `en_location`, `en_retour`
 - **`vehicle_status_<date>.csv`** (toutes les 5 min) : `collecte`, `vehicle_id`, `station_id`, `lat`, `lon`, `vehicle_type_id`, `reserve`, `hors_service`, `autonomie_m`
 
-Les services sans stations (YEGO, Dott…) n'ont que le fichier `vehicle_status`.
+Les services sans stations (YEGO, Dott, Getaround…) n'ont que le fichier `vehicle_status`.
 
-- **Période** :
-  - Citiz Occitanie, VélôToulouse, YEGO, Vélomagg : depuis le **19/10/2026 à 17h04**
-  - les 11 autres services : depuis le **20/10/2026** _(heure à compléter)_
-  - fin : _à compléter_
-- **Premier relevé** (19/10 à 17h04) : 142 stations et 255 véhicules Citiz, 466 stations VélôToulouse, 328 scooters YEGO, 52 stations et 157 vélos Vélomagg
+- **Période** : du **20/10/2026 à 9h56** au _à compléter_, pour les 15 services
+- **Test préalable** : une première collecte sur 4 services (Citiz, VélôToulouse, YEGO, Vélomagg) a été faite le 19/10 à partir de 17h04, puis arrêtée. Elle n'est pas utilisée dans l'analyse (fichiers rangés à part dans `gbfs_test_19oct/`).
 
 ### 8. Usage calculé : `analyses/`
 
